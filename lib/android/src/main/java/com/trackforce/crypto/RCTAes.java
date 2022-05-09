@@ -79,6 +79,16 @@ public class RCTAes extends ReactContextBaseJavaModule {
             promise.reject("-1", e.getMessage());
         }
     }
+    
+    @ReactMethod
+    public void decryptTo64(String data, String pwd, String iv, Promise promise) {
+        try {
+            String strs = decrypt(data, pwd, iv);
+            promise.resolve(Base64.encodeToString(strs, Base64.NO_WRAP));
+        } catch (Exception e) {
+            promise.reject("-1", e.getMessage());
+        }
+    }
 
     @ReactMethod
     public void randomUuid(Promise promise) {

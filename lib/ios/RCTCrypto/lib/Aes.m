@@ -19,7 +19,7 @@
                                           kCCAlgorithmAES128,
                                           kCCOptionPKCS7Padding,
                                           keyData.bytes,
-                                          kCCKeySizeAES128,
+                                          kCCKeySizeAES256,
                                           ivData.bytes,
                                           data.bytes, data.length,
                                           buffer.mutableBytes,
@@ -44,4 +44,8 @@
     return [[NSString alloc] initWithData:result encoding:NSUTF8StringEncoding];
 }
 
++ (NSString *) decryptTo64: (NSString *)cipherText key: (NSString *)key iv: (NSString *)iv {
+    NSData *result = [self AES128CBC:@"decrypt" data:[[NSData alloc] initWithBase64EncodedString:cipherText options:0] key:key iv:iv];
+    return [result base64EncodedStringWithOptions:0];
+}
 @end
