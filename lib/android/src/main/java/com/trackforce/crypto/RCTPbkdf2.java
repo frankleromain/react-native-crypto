@@ -67,6 +67,16 @@ public class RCTPbkdf2 extends ReactContextBaseJavaModule {
         }
     }
 
+    @ReactMethod
+    public void hash64(String pwdBase64, String saltBase64, Integer iterations, Integer keyLen, String hash, Promise promise) {
+        try {
+            String strs = pbkdf2Base64(pwdBase64, saltBase64, iterations, keyLen, hash);
+            promise.resolve(strs);
+        } catch (Exception e) {
+            promise.reject("-1", e.getMessage());
+        }
+    }
+
     public static String bytesToHex(byte[] bytes) {
         final char[] hexArray = "0123456789abcdef".toCharArray();
         char[] hexChars = new char[bytes.length * 2];
@@ -90,6 +100,23 @@ public class RCTPbkdf2 extends ReactContextBaseJavaModule {
         PBEParametersGenerator gen = new PKCS5S2ParametersGenerator(alg);
         byte[] saltBytes = Base64.decode(salt, Base64.DEFAULT);
         gen.init(pwd.getBytes(StandardCharsets.UTF_8), saltBytes, iterations);
+        byte[] key = ((KeyParameter) gen.generateDerivedParameters(keyLen * 8)).getKey();
+        return bytesToHex(key);
+    }
+
+    private static String pbkdf2Base64(String pwd, String salt, Integer iterations, Integer keyLen, String hash) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        Map<String, ExtendedDigest> algMap = new HashMap<String, ExtendedDigest>();
+        algMap.put("SHA1", new SHA1Digest());
+        algMap.put("SHA224", new SHA224Digest());
+        algMap.put("SHA256", new SHA256Digest());
+        algMap.put("SHA384", new SHA384Digest());
+        algMap.put("SHA512", new SHA512Digest());
+        ExtendedDigest alg = algMap.get(hash);
+
+        PBEParametersGenerator gen = new PKCS5S2ParametersGenerator(alg);
+        byte[] pwdBytes = Base64.decode(pwd, Base64.DEFAULT);
+        byte[] saltBytes = Base64.decode(salt, Base64.DEFAULT);
+        gen.init(pwdBytes, saltBytes, iterations);
         byte[] key = ((KeyParameter) gen.generateDerivedParameters(keyLen * 8)).getKey();
         return bytesToHex(key);
     }
