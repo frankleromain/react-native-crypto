@@ -150,6 +150,14 @@ public class RSA {
         return data;
     }
 
+    private byte[] decryptOAEP(byte[] cipherBytes) throws NoSuchAlgorithmException, InvalidKeySpecException, IllegalBlockSizeException, BadPaddingException, NoSuchPaddingException, InvalidKeyException {
+        String message = null;
+        final Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWITHSHA-256ANDMGF1PADDING");
+        cipher.init(Cipher.DECRYPT_MODE, this.privateKey);
+        byte[] data = cipher.doFinal(cipherBytes);
+        return data;
+    }
+
     // UTF-8 input
     public String decrypt(String message) throws NoSuchAlgorithmException, InvalidKeySpecException, IllegalBlockSizeException, BadPaddingException, NoSuchPaddingException, InvalidKeyException {
         byte[] cipherBytes = Base64.decode(message, Base64.DEFAULT);
@@ -161,6 +169,13 @@ public class RSA {
     public String decrypt64(String b64message) throws NoSuchAlgorithmException, InvalidKeySpecException, IllegalBlockSizeException, BadPaddingException, NoSuchPaddingException, InvalidKeyException {
         byte[] cipherBytes = Base64.decode(b64message, Base64.DEFAULT);
         byte[] data = decrypt(cipherBytes);
+        return Base64.encodeToString(data, Base64.DEFAULT);
+    }
+
+    // Base64 input
+    public String decrypt64OAEP(String b64message) throws NoSuchAlgorithmException, InvalidKeySpecException, IllegalBlockSizeException, BadPaddingException, NoSuchPaddingException, InvalidKeyException {
+        byte[] cipherBytes = Base64.decode(b64message, Base64.DEFAULT);
+        byte[] data = decryptOAEP(cipherBytes);
         return Base64.encodeToString(data, Base64.DEFAULT);
     }
 

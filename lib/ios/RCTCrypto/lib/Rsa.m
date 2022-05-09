@@ -123,6 +123,12 @@ typedef void (^SecKeyPerformBlock)(SecKeyRef key);
     return [decrypted base64EncodedStringWithOptions:0];
 }
 
+- (NSString *)decrypt64OAEP:(NSString*)message {
+    NSData *data = [[NSData alloc] initWithBase64EncodedString:message options:NSDataBase64DecodingIgnoreUnknownCharacters];
+    NSData *decrypted = [self _decryptOAEP: data];
+    return [decrypted base64EncodedStringWithOptions:0];
+}
+
 - (NSString *)decrypt:(NSString *)message {
     NSData *data = [[NSData alloc] initWithBase64EncodedString:message options:NSDataBase64DecodingIgnoreUnknownCharacters];
     NSData *decrypted = [self _decrypt: data];
@@ -141,6 +147,31 @@ typedef void (^SecKeyPerformBlock)(SecKeyRef key);
             CFErrorRef error = NULL;
             clearText = (NSData *)CFBridgingRelease(SecKeyCreateDecryptedData(privateKey,
                                                                               kSecKeyAlgorithmRSAEncryptionPKCS1,
+                                                                              (__bridge CFDataRef)data,
+                                                                              &error));
+            if (!clearText) {
+                NSError *err = CFBridgingRelease(error);
+                NSLog(@"%@", err);
+            }
+        }
+    };
+
+    decryptor(self.privateKeyRef);
+    return clearText;
+}
+
+- (NSData *)_decryptOAEP:(NSData *)data {
+    __block NSData *clearText = nil;
+
+    void(^decryptor)(SecKeyRef) = ^(SecKeyRef privateKey) {
+
+        BOOL canDecrypt = SecKeyIsAlgorithmSupported(privateKey,
+                                                     kSecKeyOperationTypeDecrypt,
+                                                     kSecKeyAlgorithmRSAEncryptionPKCS1);
+        if (canDecrypt) {
+            CFErrorRef error = NULL;
+            clearText = (NSData *)CFBridgingRelease(SecKeyCreateDecryptedData(privateKey,
+                                                                              kSecKeyAlgorithmRSAEncryptionOAEPSHA256,
                                                                               (__bridge CFDataRef)data,
                                                                               &error));
             if (!clearText) {

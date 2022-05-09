@@ -16,6 +16,7 @@
 
 - (NSString *)encrypt64:(NSString *)message;
 - (NSString *)decrypt64:(NSString *)encodedMessage;
+- (NSString *)decrypt64OAEP:(NSString *)encodedMessage;
 
 - (NSData *)_encrypt:(NSData *)message;
 - (NSData *)_decrypt:(NSData *)encodedMessage;
