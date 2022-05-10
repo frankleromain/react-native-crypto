@@ -29,4 +29,15 @@ RCT_EXPORT_METHOD(decrypt:(NSString *)base64 key:(NSString *)key iv:(NSString *)
     }
 }
 
+RCT_EXPORT_METHOD(decryptTo64:(NSString *)base64 key:(NSString *)key iv:(NSString *)iv
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject) {
+    NSError *error = nil;
+    NSString *data = [Aes decryptTo64:base64 key:key iv:iv];
+    if (data == nil) {
+        reject(@"decrypt_fail", @"Decrypt failed", error);
+    } else {
+        resolve(data);
+    }
+}
 @end

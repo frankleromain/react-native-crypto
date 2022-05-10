@@ -90,6 +90,15 @@ RCT_EXPORT_METHOD(decrypt64:(NSString *)encodedMessage withKey:(NSString *)key r
     });
 }
 
+RCT_EXPORT_METHOD(decrypt64OAEP:(NSString *)encodedMessage withKey:(NSString *)key resolve:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject) {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        Rsa *rsa = [[Rsa alloc] init];
+        rsa.privateKey = key;
+        NSString *message = [rsa decrypt64OAEP:encodedMessage];
+        resolve(message);
+    });
+}
 
 RCT_EXPORT_METHOD(sign:(NSString *)message withKey:(NSString *)key andHash:(NSString *)hash resolve:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject) {
