@@ -1,6 +1,6 @@
 {
     "name": "@koffre_npm/react-native-crypto",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "description": "React-native crypto module",
     "main": "index.js",
     "types": "./typings/react-native-crypto.d.ts",
