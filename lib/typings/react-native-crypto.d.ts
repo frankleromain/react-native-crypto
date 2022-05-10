@@ -1,4 +1,4 @@
-declare module '@trackforce/react-native-crypto' {
+declare module '@koffre_npm/react-native-crypto' {
   interface PublicKey {
     public: string;
   }
