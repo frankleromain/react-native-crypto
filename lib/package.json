@@ -1,6 +1,6 @@
 {
-    "name": "@trackforce/react-native-crypto",
-    "version": "1.0.1",
+    "name": "@koffre_npm/react-native-crypto",
+    "version": "1.0.2",
     "description": "React-native crypto module",
     "main": "index.js",
     "types": "./typings/react-native-crypto.d.ts",
@@ -22,13 +22,13 @@
         "hmac256",
         "rsa"
     ],
-    "homepage": "https://github.com/trackforce/react-native-crypto",
+    "homepage": "https://github.com/frankleromain/react-native-crypto",
     "bugs": {
-        "url": "https://github.com/trackforce/react-native-crypto/issues"
+        "url": "https://github.com/frankleromain/react-native-crypto/issues"
     },
     "repository": {
         "type": "git",
-        "url": "git://github.com/trackforce/react-native-crypto.git"
+        "url": "git://github.com/frankleromain/react-native-crypto.git"
     },
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
