@@ -84,7 +84,7 @@ public class RCTAes extends ReactContextBaseJavaModule {
     public void decryptTo64(String data, String pwd, String iv, Promise promise) {
         try {
             String strs = decrypt(data, pwd, iv);
-            promise.resolve(Base64.encodeToString(strs, Base64.NO_WRAP));
+            promise.resolve(Base64.encodeToString(strs.getBytes(), Base64.NO_WRAP));
         } catch (Exception e) {
             promise.reject("-1", e.getMessage());
         }
