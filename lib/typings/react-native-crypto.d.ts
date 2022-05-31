@@ -9,6 +9,7 @@ declare module '@koffre_npm/react-native-crypto' {
 
   namespace Aes {
     export function encrypt(text: string, key: string, iv: string): Promise<string>;
+    export function encryptFrom64(text64: string, key: string, iv: string): Promise<string>;
     export function decrypt(ciphertext: string, key: string, iv: string): Promise<string>;
     export function decryptTo64(ciphertext: string, key: string, iv: string): Promise<string>;
   }

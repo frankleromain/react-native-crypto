@@ -33,6 +33,10 @@
     NSLog(@"AES error, %d", cryptStatus);
     return nil;
 }
++ (NSString *) encryptFrom64: (NSString *)clearText key: (NSString *)key iv: (NSString *)iv {
+    NSData *result = [self AES128CBC:@"encrypt" data:[[NSData alloc] initWithBase64EncodedString:clearText options:0] key:key iv:iv];
+    return [result base64EncodedStringWithOptions:0];
+}
 
 + (NSString *) encrypt: (NSString *)clearText key: (NSString *)key iv: (NSString *)iv {
     NSData *result = [self AES128CBC:@"encrypt" data:[clearText dataUsingEncoding:NSUTF8StringEncoding] key:key iv:iv];
