@@ -15,4 +15,12 @@
     return [Shared toHex:nsdata];
 }
 
++ (NSString *) hmac1: (NSString *)input key: (NSString *)key {
+    NSData *keyData = [Shared fromHex:key];
+    NSData *inputData = [[NSData alloc] initWithBase64EncodedString:input options:0];
+    void* buffer = malloc(CC_SHA1_DIGEST_LENGTH);
+    CCHmac(kCCHmacAlgSHA1, [keyData bytes], [keyData length], [inputData bytes], [inputData length], buffer);
+    NSData *nsdata = [NSData dataWithBytesNoCopy:buffer length:CC_SHA1_DIGEST_LENGTH freeWhenDone:YES];
+    return [nsdata base64EncodedStringWithOptions:0];
+}
 @end

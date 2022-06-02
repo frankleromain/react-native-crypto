@@ -68,6 +68,15 @@ public class RCTHmac extends ReactContextBaseJavaModule {
             promise.reject("-1", e.getMessage());
         }
     }
+    @ReactMethod
+    public void hmac1(String data, String pwd, Promise promise) {
+        try {
+            String strs = hmac1(data, pwd);
+            promise.resolve(strs);
+        } catch (Exception e) {
+            promise.reject("-1", e.getMessage());
+        }
+    }
 
     public static String bytesToHex(byte[] bytes) {
         final char[] hexArray = "0123456789abcdef".toCharArray();
@@ -87,5 +96,14 @@ public class RCTHmac extends ReactContextBaseJavaModule {
         SecretKey secret_key = new SecretKeySpec(akHexData, HMAC_SHA_256);
         sha256_HMAC.init(secret_key);
         return bytesToHex(sha256_HMAC.doFinal(contentData));
+    }
+
+     private static String hmac1(String text, String key) throws NoSuchAlgorithmException, InvalidKeyException  {
+        byte[] contentData = Base64.decode(text, Base64.NO_WRAP);
+        byte[] akHexData = Hex.decode(key);
+        Mac sha1_HMAC = Mac.getInstance(HMAC_SHA_1);
+        SecretKey secret_key = new SecretKeySpec(akHexData, HMAC_SHA_1);
+        sha1_HMAC.init(secret_key);
+        return Base64.encodeToString(sha1_HMAC.doFinal(contentData), Base64.NO_WRAP);
     }
 }

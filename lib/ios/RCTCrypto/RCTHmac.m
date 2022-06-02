@@ -16,4 +16,16 @@ RCT_EXPORT_METHOD(hmac256:(NSString *)base64 key:(NSString *)key
         resolve(data);
     }
 }
+
+RCT_EXPORT_METHOD(hmac1:(NSString *)base64 key:(NSString *)key
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject) {
+    NSError *error = nil;
+    NSString *data = [Hmac hmac1:base64 key:key];
+    if (data == nil) {
+        reject(@"hmac_fail", @"HMAC error", error);
+    } else {
+        resolve(data);
+    }
+}
 @end

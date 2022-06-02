@@ -22,6 +22,7 @@ declare module '@koffre_npm/react-native-crypto' {
 
   namespace Hmac {
     export function hmac256(ciphertext: string, key: string): Promise<string>;
+    export function hmac1(ciphertext64: string, key: string): Promise<string>;
   }
 
   namespace Pbkdf2 {
