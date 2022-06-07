@@ -49,6 +49,7 @@ import com.facebook.react.bridge.Callback;
 public class RCTHmac extends ReactContextBaseJavaModule {
 
     public static final String HMAC_SHA_256 = "HmacSHA256";
+    public static final String HMAC_SHA_1 = "HmacSHA1";
 
     public RCTHmac(ReactApplicationContext reactContext) {
         super(reactContext);
